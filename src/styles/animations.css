@@ -1,6 +1,7 @@
 /* ==========================================================================
-   ANIMATIONS.CSS — keyframes reutilizáveis
-   (as durações vêm de variables.css e são zeradas com "movimento reduzido")
+   ANIMATIONS.CSS — keyframes e utilitários de animação
+   Tudo usa transform/opacity (leve para PCs e celulares simples).
+   "Movimento reduzido" do sistema desliga as animações.
    ========================================================================== */
 @keyframes fade-in {
   from { opacity: 0; }
@@ -8,39 +9,124 @@
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(2rem); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.75rem) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(1rem) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes pop {
   0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
+  40% { transform: scale(1.35); }
   100% { transform: scale(1); }
 }
 
-.anim-fade-in {
-  animation: fade-in var(--duration-slow) var(--ease-out) both;
+@keyframes shake {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-12deg); }
+  40% { transform: rotate(10deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(4deg); }
 }
 
-.anim-fade-up {
-  animation: fade-up var(--duration-slower) var(--ease-out) both;
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes speed-line {
+  from { transform: translateX(110vw); }
+  to { transform: translateX(-40vw); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes word-up {
+  from { opacity: 0; transform: translateY(110%) rotate(4deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes draw-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Utilitários ---------- */
+.anim-fade-in { animation: fade-in var(--duration-slow) var(--ease-out) both; }
+.anim-fade-up { animation: fade-up var(--duration-slower) var(--ease-out) both; }
+
+/* Revelar na rolagem (ativado pelo hook useReveal) */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-zoom {
+  opacity: 0;
+  transition:
+    opacity 800ms var(--ease-out),
+    transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal { transform: translateY(40px); }
+.reveal-left { transform: translateX(-48px); }
+.reveal-right { transform: translateX(48px); }
+.reveal-zoom { transform: scale(0.92); }
+
+.reveal.is-visible,
+.reveal-left.is-visible,
+.reveal-right.is-visible,
+.reveal-zoom.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Elemento voando até o carrinho */
+.fly-to-cart {
+  position: fixed;
+  z-index: var(--z-toast);
+  pointer-events: none;
+  border-radius: var(--radius-lg);
+  background: #fff;
+  object-fit: contain;
+  box-shadow: var(--shadow-xl);
+  transition:
+    transform 750ms cubic-bezier(0.55, 0, 0.3, 1),
+    opacity 750ms ease-in;
+}
+
+/* Transição de página */
+.page-transition {
+  animation: page-in 500ms var(--ease-out) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,6 +135,15 @@
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-zoom {
+    opacity: 1;
+    transform: none;
   }
 }

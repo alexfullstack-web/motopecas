@@ -15,7 +15,7 @@ function loadCart() {
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(loadCart);
-  const [notice, setNotice] = useState("");
+  const [notice, setNotice] = useState(null);
 
   useEffect(() => {
     try {
@@ -27,7 +27,7 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     if (!notice) return undefined;
-    const timer = setTimeout(() => setNotice(""), 2500);
+    const timer = setTimeout(() => setNotice(null), 3000);
     return () => clearTimeout(timer);
   }, [notice]);
 
@@ -53,13 +53,20 @@ export function CartProvider({ children }) {
           name: product.name,
           price: product.price,
           image: product.image,
+          fallback: product.fallback,
+          category: product.category,
           stock: product.stock,
           quantity: Math.min(quantity, limit),
         },
       ];
     });
 
-    setNotice(`${product.name} foi adicionado ao carrinho.`);
+    setNotice({
+      id: Date.now(),
+      text: `${product.name} foi adicionado ao carrinho.`,
+      image: product.image,
+      fallback: product.fallback,
+    });
   }, []);
 
   const updateQuantity = useCallback((id, quantity) => {

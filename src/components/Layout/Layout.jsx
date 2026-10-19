@@ -10,7 +10,7 @@ export default function Layout() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname]);
 
   return (
@@ -21,7 +21,8 @@ export default function Layout() {
 
       <Header />
 
-      <div id="conteudo" className="layout__content">
+      {/* a "key" reinicia a animação de entrada a cada troca de página */}
+      <div id="conteudo" className="layout__content page-transition" key={pathname}>
         <Outlet />
       </div>
 

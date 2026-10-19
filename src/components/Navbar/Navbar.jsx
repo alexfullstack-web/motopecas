@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { buildWhatsAppUrl } from "../../services/whatsapp";
+import { WhatsAppIcon } from "../Icon/Icon";
 import "./Navbar.css";
 
 const links = [
@@ -15,19 +17,33 @@ export default function Navbar({ isOpen = false, onNavigate }) {
       className={`navbar${isOpen ? " navbar--open" : ""}`}
       aria-label="Navegação principal"
     >
-      {links.map((link) => (
+      {links.map((link, index) => (
         <NavLink
           key={link.to}
           to={link.to}
           end={link.to === "/"}
           onClick={onNavigate}
-          className={({ isActive }) =>
-            `navbar__link${isActive ? " navbar__link--active" : ""}`
-          }
+          style={{ "--i": index }}
+          className={({ isActive }) => `navbar__link${isActive ? " navbar__link--active" : ""}`}
         >
+          <span className="navbar__index" aria-hidden="true">
+            0{index + 1}
+          </span>
           {link.text}
         </NavLink>
       ))}
+
+      <a
+        className="navbar__whatsapp btn btn--whatsapp"
+        style={{ "--i": links.length }}
+        href={buildWhatsAppUrl("Olá! Vim pelo site e gostaria de atendimento.")}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onNavigate}
+      >
+        <WhatsAppIcon size={18} />
+        Pedir pelo WhatsApp
+      </a>
     </nav>
   );
 }
