@@ -8,9 +8,18 @@ import { buildWhatsAppUrl } from "../../services/whatsapp";
 import "./Home.css";
 
 const highlights = [
-  { title: "Compra pelo WhatsApp", text: "Monte o carrinho e finalize o pedido direto com a loja." },
-  { title: "Peças para o dia a dia", text: "Pneus, freios, transmissão, elétrica e acessórios." },
-  { title: "Tire dúvidas antes de comprar", text: "Fale com a equipe para confirmar a compatibilidade." },
+  {
+    title: "Compra pelo WhatsApp",
+    text: "Monte o carrinho e finalize o pedido direto com a loja.",
+  },
+  {
+    title: "Peças para o dia a dia",
+    text: "Pneus, freios, transmissão, elétrica e acessórios.",
+  },
+  {
+    title: "Tire dúvidas antes de comprar",
+    text: "Fale com a equipe para confirmar a compatibilidade.",
+  },
 ];
 
 export default function Home() {
@@ -46,7 +55,11 @@ export default function Home() {
 
         <div className="hero__visual" aria-hidden="true">
           <div className="hero__circle">
-            <span className="hero__symbol">M</span>
+              <img
+                className="img__piloto"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMy4lveWM_BxESNscWjRGLyblzs4c3zSsyDRsTUzji7ahXiWm-zC6cTaw&s=10"
+                alt="Moto"
+              />
           </div>
           <span className="hero__visual-label">Feita para quem pilota</span>
         </div>
@@ -78,7 +91,9 @@ export default function Home() {
                 key={category.id}
                 category={category}
                 onClick={(item) =>
-                  navigate(`/produtos?categoria=${encodeURIComponent(item.name)}`)
+                  navigate(
+                    `/produtos?categoria=${encodeURIComponent(item.name)}`,
+                  )
                 }
               />
             ))}
@@ -125,7 +140,9 @@ export default function Home() {
 
         <a
           className="home__cta-button"
-          href={buildWhatsAppUrl("Olá! Preciso de ajuda para encontrar uma peça.")}
+          href={buildWhatsAppUrl(
+            "Olá! Preciso de ajuda para encontrar uma peça.",
+          )}
           target="_blank"
           rel="noopener noreferrer"
         >
